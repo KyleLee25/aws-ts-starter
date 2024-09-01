@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - AWS_ACCESS_KEY_ID=DUMMYIDEXAMPLE
+      - AWS_SECRET_ACCESS_KEY=DUMMYEXAMPLEKEY
+      - DYNAMODB_ENDPOINT=http://dynamodb:8000
+      - NODE_ENV=development
+      - IS_OFFLINE=true
+      - TABLE_NAME=aws-ts-starter-${STAGE:-dev}
+    depends_on:
+      - dynamodb-init
+  dynamodb:
+    image: amazon/dynamodb-local
+    ports:
+      - "8000:8000"
+    command: ["-jar", "DynamoDBLocal.jar", "-sharedDb", "-inMemory"]
+  dynamodb-init:
+    image: amazon/aws-cli
+    environment:
+      - AWS_ACCESS_KEY_ID=DUMMYIDEXAMPLE
+      - AWS_SECRET_ACCESS_KEY=DUMMYEXAMPLEKEY
+      - AWS_DEFAULT_REGION=us-east-1
+    depends_on:
+      - dynamodb
+    entrypoint: >
+      /bin/sh -c "
+      echo 'Waiting for DynamoDB to start...' &&
+      sleep 5 &&
+      echo 'Creating table...' &&
+      aws dynamodb create-table --table-name aws-ts-starter-${STAGE:-dev} --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 --endpoint-url http://dynamodb:8000 &&
+      echo 'Table created successfully'"
