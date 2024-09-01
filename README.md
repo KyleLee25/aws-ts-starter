@@ -45,7 +45,8 @@ To run the application locally without Docker:
 ```
 npm run start
 ```
-> **Alert:** Running the application locally with `npm run start` requires a separate DynamoDB instance to be running. If you don't have a local DynamoDB instance set up, it's recommended to use the Docker method described above (`npm run deploy:docker`), which includes a local DynamoDB instance.
+> [!WARNING]
+> Running the application locally with `npm run start` requires a separate DynamoDB instance to be running. If you don't have a local DynamoDB instance set up, it's recommended to use the Docker method described above (`npm run deploy:docker`), which includes a local DynamoDB instance.
 
 ## Deployment
 
