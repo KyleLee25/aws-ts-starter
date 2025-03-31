@@ -1,0 +1,7 @@
+com\example\handlers\UpdateItemHandler.class
+com\example\handlers\DeleteItemHandler.class
+com\example\services\DynamoDBService.class
+com\example\handlers\CreateItemHandler.class
+com\example\handlers\GetItemHandler.class
+com\example\models\Item.class
+com\example\handlers\ListItemsHandler.class

@@ -66,6 +66,18 @@ const serverlessConfiguration: AWS = {
                     http: {
                         method: "post",
                         path: "/items",
+                        cors: {
+                            origin: '*',
+                            headers: [
+                                'Content-Type',
+                                'X-Amz-Date',
+                                'Authorization',
+                                'X-Api-Key',
+                                'X-Amz-Security-Token',
+                                'X-Amz-User-Agent'
+                            ],
+                            allowCredentials: false
+                        }
                     }
                 }
             ]
@@ -76,7 +88,19 @@ const serverlessConfiguration: AWS = {
                 {
                     http: {
                         method: "get",
-                        path: "/items/{id}"
+                        path: "/items/{id}",
+                        cors: {
+                            origin: '*',
+                            headers: [
+                                'Content-Type',
+                                'X-Amz-Date',
+                                'Authorization',
+                                'X-Api-Key',
+                                'X-Amz-Security-Token',
+                                'X-Amz-User-Agent'
+                            ],
+                            allowCredentials: false
+                        }
                     }
                 }
             ]
@@ -87,7 +111,19 @@ const serverlessConfiguration: AWS = {
                 {
                     http: {
                         method: "put",
-                        path: "/items/{id}"
+                        path: "/items/{id}",
+                        cors: {
+                            origin: '*',
+                            headers: [
+                                'Content-Type',
+                                'X-Amz-Date',
+                                'Authorization',
+                                'X-Api-Key',
+                                'X-Amz-Security-Token',
+                                'X-Amz-User-Agent'
+                            ],
+                            allowCredentials: false
+                        }
                     }
                 }
             ]
@@ -98,7 +134,19 @@ const serverlessConfiguration: AWS = {
                 {
                     http: {
                         method: "delete",
-                        path: "/items/{id}"
+                        path: "/items/{id}",
+                        cors: {
+                            origin: '*',
+                            headers: [
+                                'Content-Type',
+                                'X-Amz-Date',
+                                'Authorization',
+                                'X-Api-Key',
+                                'X-Amz-Security-Token',
+                                'X-Amz-User-Agent'
+                            ],
+                            allowCredentials: false
+                        }
                     }
                 }
             ]
@@ -109,7 +157,19 @@ const serverlessConfiguration: AWS = {
                 {
                     http: {
                         method: "get",
-                        path: "/items"
+                        path: "/items",
+                        cors: {
+                            origin: '*',
+                            headers: [
+                                'Content-Type',
+                                'X-Amz-Date',
+                                'Authorization',
+                                'X-Api-Key',
+                                'X-Amz-Security-Token',
+                                'X-Amz-User-Agent'
+                            ],
+                            allowCredentials: false
+                        }
                     }
                 }
             ]
