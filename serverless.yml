@@ -30,17 +30,15 @@ functions:
           path: /items
           method: post
           cors:
-            origin: '*'
-            headers:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
-            allowMethods:
-              - POST
-              - OPTIONS
-            allowCredentials: false
+              - X-Amz-User-Agent
+            allowCredentials: true
   getItem:
     handler: com.example.handlers.GetItemHandler
     events:
@@ -48,17 +46,15 @@ functions:
           path: /items/{id}
           method: get
           cors:
-            origin: '*'
-            headers:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
-            allowMethods:
-              - GET
-              - OPTIONS
-            allowCredentials: false
+              - X-Amz-User-Agent
+            allowCredentials: true
   updateItem:
     handler: com.example.handlers.UpdateItemHandler
     events:
@@ -66,17 +62,15 @@ functions:
           path: /items/{id}
           method: put
           cors:
-            origin: '*'
-            headers:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
-            allowMethods:
-              - PUT
-              - OPTIONS
-            allowCredentials: false
+              - X-Amz-User-Agent
+            allowCredentials: true
   deleteItem:
     handler: com.example.handlers.DeleteItemHandler
     events:
@@ -84,17 +78,15 @@ functions:
           path: /items/{id}
           method: delete
           cors:
-            origin: '*'
-            headers:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
-            allowMethods:
-              - DELETE
-              - OPTIONS
-            allowCredentials: false
+              - X-Amz-User-Agent
+            allowCredentials: true
   listItems:
     handler: com.example.handlers.ListItemsHandler
     events:
@@ -102,17 +94,31 @@ functions:
           path: /items
           method: get
           cors:
-            origin: '*'
-            headers:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
-            allowMethods:
-              - GET
-              - OPTIONS
-            allowCredentials: false
+              - X-Amz-User-Agent
+            allowCredentials: true
+  options:
+    handler: com.example.handlers.OptionsHandler
+    events:
+      - http:
+          path: /{proxy+}
+          method: options
+          cors:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
 
 resources:
   Resources:
