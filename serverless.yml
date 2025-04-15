@@ -1,6 +1,16 @@
 service: aws-java-starter
 
 provider:
+  cors:
+    origin: '*'
+    headers:
+      - Content-Type
+      - X-Amz-Date
+      - Authorization
+      - X-Api-Key
+      - X-Amz-Security-Token
+      - X-Amz-User-Agent
+    allowCredentials: false
   name: aws
   runtime: java11
   region: us-east-1
@@ -38,7 +48,7 @@ functions:
               - X-Api-Key
               - X-Amz-Security-Token
               - X-Amz-User-Agent
-            allowCredentials: true
+            allowCredentials: false
   getItem:
     handler: com.example.handlers.GetItemHandler
     events:
@@ -54,7 +64,7 @@ functions:
               - X-Api-Key
               - X-Amz-Security-Token
               - X-Amz-User-Agent
-            allowCredentials: true
+            allowCredentials: false
   updateItem:
     handler: com.example.handlers.UpdateItemHandler
     events:
@@ -70,7 +80,7 @@ functions:
               - X-Api-Key
               - X-Amz-Security-Token
               - X-Amz-User-Agent
-            allowCredentials: true
+            allowCredentials: false
   deleteItem:
     handler: com.example.handlers.DeleteItemHandler
     events:
@@ -86,7 +96,7 @@ functions:
               - X-Api-Key
               - X-Amz-Security-Token
               - X-Amz-User-Agent
-            allowCredentials: true
+            allowCredentials: false
   listItems:
     handler: com.example.handlers.ListItemsHandler
     events:
@@ -102,7 +112,7 @@ functions:
               - X-Api-Key
               - X-Amz-Security-Token
               - X-Amz-User-Agent
-            allowCredentials: true
+            allowCredentials: false
   options:
     handler: com.example.handlers.OptionsHandler
     events:
@@ -118,7 +128,7 @@ functions:
               - X-Api-Key
               - X-Amz-Security-Token
               - X-Amz-User-Agent
-            allowCredentials: true
+            allowCredentials: false
 
 resources:
   Resources:
