@@ -9,13 +9,15 @@ provider:
       - Authorization
       - X-Api-Key
       - X-Amz-Security-Token
-      - X-Amz-User-Agent
     allowCredentials: false
   name: aws
   runtime: java11
   region: us-east-1
   environment:
     TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}
+    STUDENTS_TABLE: ${self:service}-students-${sls:stage}
+    COURSES_TABLE: ${self:service}-courses-${sls:stage}
+    GRADES_TABLE: ${self:service}-grades-${sls:stage}
   iam:
     role:
       statements:
@@ -27,7 +29,11 @@ provider:
             - dynamodb:DeleteItem
             - dynamodb:Scan
             - dynamodb:Query
-          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TABLE_NAME}
+          Resource: 
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TABLE_NAME}
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.STUDENTS_TABLE}
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.COURSES_TABLE}
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GRADES_TABLE}
 
 package:
   artifact: target/aws-java-starter-1.0-SNAPSHOT.jar
@@ -40,14 +46,20 @@ functions:
           path: /items
           method: post
           cors:
-            origin: '*' # <-- Specify allowed origin
-            headers: # <-- Specify allowed headers
+            origin: '*'
+            headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
               - X-Amz-User-Agent
+            allowMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
             allowCredentials: false
   getItem:
     handler: com.example.handlers.GetItemHandler
@@ -56,14 +68,20 @@ functions:
           path: /items/{id}
           method: get
           cors:
-            origin: '*' # <-- Specify allowed origin
-            headers: # <-- Specify allowed headers
+            origin: '*'
+            headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
               - X-Amz-User-Agent
+            allowMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
             allowCredentials: false
   updateItem:
     handler: com.example.handlers.UpdateItemHandler
@@ -72,14 +90,20 @@ functions:
           path: /items/{id}
           method: put
           cors:
-            origin: '*' # <-- Specify allowed origin
-            headers: # <-- Specify allowed headers
+            origin: '*'
+            headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
               - X-Amz-User-Agent
+            allowMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
             allowCredentials: false
   deleteItem:
     handler: com.example.handlers.DeleteItemHandler
@@ -88,14 +112,20 @@ functions:
           path: /items/{id}
           method: delete
           cors:
-            origin: '*' # <-- Specify allowed origin
-            headers: # <-- Specify allowed headers
+            origin: '*'
+            headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
               - X-Amz-User-Agent
+            allowMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
             allowCredentials: false
   listItems:
     handler: com.example.handlers.ListItemsHandler
@@ -104,14 +134,19 @@ functions:
           path: /items
           method: get
           cors:
-            origin: '*' # <-- Specify allowed origin
-            headers: # <-- Specify allowed headers
+            origin: '*'
+            headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
-              - X-Amz-User-Agent
+            allowMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
             allowCredentials: false
   options:
     handler: com.example.handlers.OptionsHandler
@@ -120,15 +155,84 @@ functions:
           path: /{proxy+}
           method: options
           cors:
-            origin: '*' # <-- Specify allowed origin
-            headers: # <-- Specify allowed headers
+            origin: '*'
+            headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
               - X-Amz-User-Agent
+            allowMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
             allowCredentials: false
+  createStudent:
+    handler: com.example.handlers.student.CreateStudentHandler
+    events:
+      - http:
+          path: /students
+          method: post
+          cors: true
+  getStudent:
+    handler: com.example.handlers.student.GetStudentHandler
+    events:
+      - http:
+          path: /students/{id}
+          method: get
+          cors: true
+  listStudents:
+    handler: com.example.handlers.student.ListStudentsHandler
+    events:
+      - http:
+          path: /students
+          method: get
+          cors: true
+  createCourse:
+    handler: com.example.handlers.course.CreateCourseHandler
+    events:
+      - http:
+          path: /courses
+          method: post
+          cors: true
+  getCourse:
+    handler: com.example.handlers.course.GetCourseHandler
+    events:
+      - http:
+          path: /courses/{id}
+          method: get
+          cors: true
+  listCourses:
+    handler: com.example.handlers.course.ListCoursesHandler
+    events:
+      - http:
+          path: /courses
+          method: get
+          cors: true
+  createGrade:
+    handler: com.example.handlers.grade.CreateGradeHandler
+    events:
+      - http:
+          path: /grades
+          method: post
+          cors: true
+  getStudentGrades:
+    handler: com.example.handlers.grade.GetStudentGradesHandler
+    events:
+      - http:
+          path: /grades/student/{studentId}
+          method: get
+          cors: true
+  getCourseGrades:
+    handler: com.example.handlers.grade.GetCourseGradesHandler
+    events:
+      - http:
+          path: /grades/course/{courseId}
+          method: get
+          cors: true
 
 resources:
   Resources:
@@ -163,3 +267,83 @@ resources:
         ResponseType: DEFAULT_5XX
         RestApiId:
           Ref: 'ApiGatewayRestApi' 
+    UserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: ${self:service}-user-pool-${sls:stage}
+        AutoVerifiedAttributes:
+          - email
+        Schema:
+          - Name: email
+            AttributeDataType: String
+            Mutable: true
+            Required: true
+          - Name: role
+            AttributeDataType: String
+            Mutable: true
+            Required: false
+            StringAttributeConstraints:
+              MinLength: "1"
+              MaxLength: "256"
+        
+    UserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        UserPoolId: !Ref UserPool
+        ClientName: ${self:service}-client-${sls:stage}
+        GenerateSecret: false
+        ExplicitAuthFlows:
+          - ALLOW_USER_SRP_AUTH
+          - ALLOW_REFRESH_TOKEN_AUTH
+    StudentsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.STUDENTS_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+    CoursesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.COURSES_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+    GradesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.GRADES_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: studentId
+            AttributeType: S
+          - AttributeName: courseId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: StudentIdIndex
+            KeySchema:
+              - AttributeName: studentId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+          - IndexName: CourseIdIndex
+            KeySchema:
+              - AttributeName: courseId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST

@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "serverless offline start --stage dev --host 0.0.0.0",
-    "deploy": "serverless deploy --stage prod",
+    "deploy": "mvn clean package && serverless deploy --stage prod",
     "remove": "serverless remove --stage prod",
     "test": "jest --runInBand --detectOpenHandles",
     "deploy:docker": "docker-compose up --build"

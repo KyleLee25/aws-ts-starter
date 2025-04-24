@@ -21,7 +21,7 @@ export function Items() {
       const data = await itemsApi.listItems();
       setItems(data);
     } catch (err) {
-      setError('Error loading items');
+      setError('Error loading students');
     }
   };
 
@@ -29,11 +29,11 @@ export function Items() {
     try {
       await itemsApi.createItem(newItem);
       setNewItem({ name: '', description: '', price: 0 });
-      setSuccess('Item created successfully');
+      setSuccess('Student added successfully');
       loadItems();
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
-      setError('Error creating item');
+      setError('Error adding student');
       setTimeout(() => setError(''), 3000);
     }
   };
@@ -41,18 +41,18 @@ export function Items() {
   const handleDeleteItem = async (id: string) => {
     try {
       await itemsApi.deleteItem(id);
-      setSuccess('Item deleted successfully');
+      setSuccess('Student deleted successfully');
       loadItems();
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
-      setError('Error deleting item');
+      setError('Error deleting student');
       setTimeout(() => setError(''), 3000);
     }
   };
 
   return (
     <div className="container">
-      <h1>Items Manager</h1>
+      <h1>Student Application</h1>
 
       {error && <div className="error-message">{error}</div>}
       {success && <div className="success-message">{success}</div>}
@@ -60,22 +60,22 @@ export function Items() {
       <div className="form-container">
         <input
           type="text"
-          placeholder="Item name"
+          placeholder="Student name"
           value={newItem.name}
           onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
         />
         <textarea
-          placeholder="Item description"
+          placeholder="Email, race, age, and other information"
           value={newItem.description}
           onChange={(e) => setNewItem({ ...newItem, description: e.target.value })}
         />
         <input
           type="number"
-          placeholder="Price"
-          value={newItem.price}
-          onChange={(e) => setNewItem({ ...newItem, price: parseFloat(e.target.value) })}
+          placeholder="Phone number"
+          value={newItem.price === 0 ? '' : newItem.price}
+          onChange={(e) => setNewItem({ ...newItem, price: parseFloat(e.target.value) || 0 })}
         />
-        <button onClick={handleCreateItem}>Create Item</button>
+        <button onClick={handleCreateItem}>Add Student</button>
       </div>
 
       <div className="items-list">
@@ -84,7 +84,7 @@ export function Items() {
             <div className="item-content">
               <h3>{item.name}</h3>
               <p>{item.description}</p>
-              <p className="price">${item.price}</p>
+              <p className="phone-number">{item.price}</p>
               {item.createdAt && (
                 <p className="date">Created: {new Date(item.createdAt).toLocaleDateString()}</p>
               )}

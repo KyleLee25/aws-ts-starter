@@ -13,29 +13,17 @@ export interface Item {
 
 export const itemsApi = {
   listItems: async () => {
-    const response = await axios.get(`${API_BASE_URL}/items`, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    const response = await axios.get(`${API_BASE_URL}/items`);
     return response.data;
   },
 
   createItem: async (item: Item) => {
-    const response = await axios.post(`${API_BASE_URL}/items`, item, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    const response = await axios.post(`${API_BASE_URL}/items`, item);
     return response.data;
   },
 
   deleteItem: async (id: string) => {
-    const response = await axios.delete(`${API_BASE_URL}/items/${id}`, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    const response = await axios.delete(`${API_BASE_URL}/items/${id}`);
     return response.data;
   }
 };
